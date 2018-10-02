@@ -16,7 +16,7 @@ find_package(catkin REQUIRED
 		moveit_ros_planning_interface
 		pluginlib
 		geometric_shapes
-		moveit_rviz_visual_tools
+		moveit_visual_tools
 		roscpp
 		roslint
 		rospy
