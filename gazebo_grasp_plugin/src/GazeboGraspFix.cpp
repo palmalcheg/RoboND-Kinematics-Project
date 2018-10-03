@@ -678,9 +678,9 @@ void GazeboGraspFix::OnContact(const ConstContactsPtr &_msg)
     // for all contacts...
     for (int i = 0; i < _msg->contact_size(); ++i) {
         physics::CollisionPtr collision1 = boost::dynamic_pointer_cast<physics::Collision>(
-                this->world->Entity(_msg->contact(i).collision1()));
+                this->world->EntityByName(_msg->contact(i).collision1()));
         physics::CollisionPtr collision2 = boost::dynamic_pointer_cast<physics::Collision>(
-                this->world->Entity(_msg->contact(i).collision2()));
+                this->world->EntityByName(_msg->contact(i).collision2()));
 
         if ((collision1 && !collision1->IsStatic()) && (collision2 && !collision2->IsStatic()))
         {
@@ -757,7 +757,7 @@ void GazeboGraspFix::OnContact(const ConstContactsPtr &_msg)
             // To find out the collision point relative to the Link's local coordinate system, first get the Poses as 4x4 matrices
             ignition::math::Matrix4d worldToLink(linkWorldPose);
             
-            ignition::math::Matrix4d worldToContact=ignition::math::Matrix4::Identity;
+            ignition::math::Matrix4d worldToContact=ignition::math::Matrix4d::Identity;
             //we can assume that the contact has identity rotation because we don't care about its orientation.
             //We could always set another rotation here too.
             worldToContact.SetTranslation(avgPos);
@@ -799,7 +799,7 @@ void GazeboGraspFix::OnContact(const ConstContactsPtr &_msg)
                 p.collLink=linkCollision;
                 p.collObj=objCollision;
                 p.force+=avgForce;
-                p.Pos()+=contactPosInLocal;
+                p.pos+=contactPosInLocal;
                 p.objPos+=objPosInLocal;
                 p.sum++;
             }
