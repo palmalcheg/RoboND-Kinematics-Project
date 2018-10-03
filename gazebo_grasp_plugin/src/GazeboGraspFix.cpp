@@ -756,10 +756,9 @@ void GazeboGraspFix::OnContact(const ConstContactsPtr &_msg)
             ignition::math::Pose3d linkWorldPose=linkCollision->GetLink()->WorldPose();
 
             // To find out the collision point relative to the Link's local coordinate system, first get the Poses as 4x4 matrices
-            ignition::math::Matrix4d worldToLink=linkWorldPose.Rot().Matrix();
-            worldToLink.SetTranslation(linkWorldPose.Pos());
+            ignition::math::Matrix4d worldToLink(linkWorldPose);
             
-            ignition::math::Matrix4d worldToContact=ignition::math::Matrix4d::IDENTITY;
+            ignition::math::Matrix4d worldToContact=ignition::math::Matrix4::Identity;
             //we can assume that the contact has identity rotation because we don't care about its orientation.
             //We could always set another rotation here too.
             worldToContact.SetTranslation(avgPos);
