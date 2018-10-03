@@ -570,11 +570,10 @@ void GazeboGraspFix::OnUpdate() {
             ignition::math::Pose3d currLinkWorldPose=cpInfo.collLink->GetLink()->WorldPose();
 
             // Get transform for currLinkWorldPose as matrix
-            ignition::math::Matrix4d worldToLink=currLinkWorldPose.Rot().Matrix();
-            worldToLink.SetTranslation(currLinkWorldPose.Pos());
+            ignition::math::Matrix4d worldToLink(currLinkWorldPose);
 
             // Get the transform from collision link to contact point
-            ignition::math::Matrix4d linkToContact=ignition::math::Matrix4d::IDENTITY;
+            ignition::math::Matrix4d linkToContact=ignition::math::Matrix4d::Identity;
             linkToContact.SetTranslation(relContactPos);
                     
             // the current world position of the contact point right now is:
@@ -788,9 +787,8 @@ void GazeboGraspFix::OnContact(const ConstContactsPtr &_msg)
 
             // now, get the pose of the object and compute it's relative position to the collision surface.
             ignition::math::Pose3d objWorldPose = objCollision->GetLink()->WorldPose();
-            ignition::math::Matrix4d worldToObj = objWorldPose.Rot().Matrix();
-            worldToObj.SetTranslation(objWorldPose.Pos());
-    
+            ignition::math::Matrix4d worldToObj(objWorldPose);
+            
             ignition::math::Matrix4d objInLocal = worldToLinkInv * worldToObj;
             ignition::math::Vector3d objPosInLocal = objInLocal.Translation();
 
