@@ -324,7 +324,7 @@ public:
         collLink(o.collLink),
         collObj(o.collObj),
         force(o.force),
-        pos(o.Pos()),
+        pos(o.pos),
         objPos(o.objPos),
         sum(o.sum){}
 
@@ -559,7 +559,7 @@ void GazeboGraspFix::OnUpdate() {
         {
             CollidingPoint& cpInfo=pointIt->second;
             // initial distance from link to contact point (relative to link)
-            ignition::math::Vector3d relContactPos=cpInfo.Pos()/cpInfo.sum;
+            ignition::math::Vector3d relContactPos=cpInfo.pos/cpInfo.sum;
             // initial distance from link to object (relative to link)
             ignition::math::Vector3d relObjPos=cpInfo.objPos/cpInfo.sum;
            
