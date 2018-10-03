@@ -200,8 +200,8 @@ void GazeboGraspFix::Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
 
     // ++++++++++++ start up things +++++++++++++++
 
-    physics::PhysicsEnginePtr physics = this->world->GetPhysicsEngine();
-    this->node->Init(this->world->GetName());
+    physics::PhysicsEnginePtr physics = this->world->Physics();
+    this->node->Init(this->world->Name());
     physics::ContactManager * contactManager = physics->GetContactManager();
     contactManager->PublishContacts(); //XXX not sure I need this?
 
@@ -564,10 +564,10 @@ void GazeboGraspFix::OnUpdate() {
             ignition::math::Vector3d relObjPos=cpInfo.objPos/cpInfo.sum;
            
             // get current world pose of object 
-            ignition::math::Pose currObjWorldPose=cpInfo.collObj->GetLink()->GetWorldPose();
+            ignition::math::Pose3d currObjWorldPose=cpInfo.collObj->GetLink()->WorldPose();
 
             // get world pose of link
-            ignition::math::Pose currLinkWorldPose=cpInfo.collLink->GetLink()->GetWorldPose();
+            ignition::math::Pose3d currLinkWorldPose=cpInfo.collLink->GetLink()->WorldPose();
 
             // Get transform for currLinkWorldPose as matrix
             ignition::math::Matrix4 worldToLink=currLinkWorldPose.rot.GetAsMatrix4();
@@ -753,7 +753,7 @@ void GazeboGraspFix::OnContact(const ConstContactsPtr &_msg)
             avgPos/=contact.count;
 
             // now, get average pose relative to the colliding link
-            ignition::math::Pose linkWorldPose=linkCollision->GetLink()->GetWorldPose();
+            ignition::math::Pose3d linkWorldPose=linkCollision->GetLink()->WorldPose();
 
             // To find out the collision point relative to the Link's local coordinate system, first get the Poses as 4x4 matrices
             ignition::math::Matrix4 worldToLink=linkWorldPose.rot.GetAsMatrix4();
@@ -788,7 +788,7 @@ void GazeboGraspFix::OnContact(const ConstContactsPtr &_msg)
             std::cout<<"z axis: "<<lZ.x<<","<<lZ.y<<","<<lZ.z<<std::endl;*/
 
             // now, get the pose of the object and compute it's relative position to the collision surface.
-            ignition::math::Pose objWorldPose = objCollision->GetLink()->GetWorldPose();
+            ignition::math::Pose3d objWorldPose = objCollision->GetLink()->WorldPose();
             ignition::math::Matrix4 worldToObj = objWorldPose.rot.GetAsMatrix4();
             worldToObj.SetTranslate(objWorldPose.pos);
     
